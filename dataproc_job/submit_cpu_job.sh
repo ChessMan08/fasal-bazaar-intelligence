@@ -1,13 +1,11 @@
 #!/bin/bash
-# CPU baseline run -- standard tier, no GPU accelerator.
 # Run this first to get your CPU baseline timing, then run submit_gpu_job.sh
-# with the SAME input data and compare the "BENCHMARK ... seconds=" line in
-# each job's logs.
+
 set -euo pipefail
 
-PROJECT_ID="your-gcp-project-id"       # <-- set this
-REGION="us-central1"                    # <-- pick a region with L4 GPU availability for the GPU run
-BUCKET_NAME="your-bucket-name"          # <-- set this (used for deps + logs)
+PROJECT_ID="fasal-bazaar-intel"         
+REGION="us-central1"
+BUCKET_NAME="your-bucket-name" 
 INPUT_PATH="gs://${BUCKET_NAME}/raw/agmarknet.parquet"
 OUTPUT_PATH="gs://${BUCKET_NAME}/processed/analyzed_cpu"
 
