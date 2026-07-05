@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+run_log*.txt
+.git/
+.gitignore
+README.md
