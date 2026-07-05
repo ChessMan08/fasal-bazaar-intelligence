@@ -37,7 +37,7 @@ CUSTOM_CSS = f"""
 html, body, [class*="css"], .stMarkdown, .stText {{ font-family: 'Inter', -apple-system, sans-serif; }}
 
 .stApp {{ background: #F6F8F6; }}
-header[data-testid="stHeader"] {{ background: transparent; height: 0; }}
+header[data-testid="stHeader"] {{ background: transparent; }}
 div[data-testid="stToolbar"] {{ display:none; }}
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
