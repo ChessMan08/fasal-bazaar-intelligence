@@ -5,9 +5,7 @@ import plotly.graph_objects as go
 import pydeck as pdk
 import streamlit as st
 
-# =============================================================================
 # PAGE CONFIG
-# =============================================================================
 st.set_page_config(
     page_title="Fasal Bazaar Intelligence",
     page_icon="🌾",
@@ -17,15 +15,7 @@ st.set_page_config(
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 
-# =============================================================================
-# DESIGN SYSTEM — CSS
-# Every color below is hard-coded on purpose. Do not rely on Streamlit's
-# theme-default text/background colors anywhere in this file — on a user
-# whose OS/browser is in dark mode, default-colored text silently turns
-# invisible against our explicitly-white cards. The .streamlit/config.toml
-# forces light mode at the app level; every text element below ALSO sets its
-# own color as a second, independent safeguard.
-# =============================================================================
+# DESIGN SYSTEM - CSS
 INK = "#1A2420"
 MUTED = "#5C6B66"
 FOREST = "#1F4E37"
@@ -162,9 +152,7 @@ PLOTLY_LAYOUT = dict(
     colorway=[ACCEL, AMBER, SLATE, "#8A8A8A", DANGER],
     plot_bgcolor="white",
     paper_bgcolor="white",
-    # automargin lets Plotly grow the margin to fit axis labels/titles instead of
-    # clipping them -- this is what fixes long commodity names on horizontal bar
-    # charts, and the y-axis title overlapping tick labels on the histogram.
+
     xaxis=dict(gridcolor="#EEF1EF", zeroline=False, linecolor=LINE, automargin=True),
     yaxis=dict(gridcolor="#EEF1EF", zeroline=False, linecolor=LINE, automargin=True),
     legend=dict(bgcolor="rgba(0,0,0,0)"),
@@ -175,10 +163,7 @@ PLOTLY_LAYOUT = dict(
 def style_fig(fig, height=380, **layout_overrides):
     layout = dict(PLOTLY_LAYOUT)
     layout["height"] = height
-    # Deep-merge xaxis/yaxis specifically -- a plain dict.update() here would let
-    # any call that passes xaxis=dict(title=...) silently wipe out the base
-    # gridcolor/linecolor/automargin instead of adding to them. That silent wipe
-    # was exactly why the commodity-name axis lost its automargin and got clipped.
+
     for axis_key in ("xaxis", "yaxis"):
         if axis_key in layout_overrides:
             merged_axis = dict(layout.get(axis_key, {}))
@@ -190,16 +175,10 @@ def style_fig(fig, height=380, **layout_overrides):
 
 
 def plot(fig, **kwargs):
-    """Wrapper around st.plotly_chart that always disables Streamlit's theme
-    auto-override (theme='streamlit' is the Streamlit default and it silently
-    recolors the whole figure to match dark/light mode, ignoring our own
-    template — this is what caused the black-background charts)."""
     st.plotly_chart(fig, use_container_width=True, theme=None, **kwargs)
 
 
-# =============================================================================
 # HELPERS
-# =============================================================================
 def format_inr(n):
     try:
         n = float(n)
@@ -243,12 +222,6 @@ def dataframe_height(n_rows, row_px=35, header_px=38, max_px=460, min_px=110):
     return int(min(max_px, max(min_px, header_px + row_px * n_rows + 3)))
 
 
-# =============================================================================
-# DEMO DATA — realistic fallback so the app is fully reviewable before real
-# pipeline output exists. All generators now share the same multi-market
-# shape as the real notebook output, so the app's logic (aggregation,
-# filtering) behaves identically in demo and real mode.
-# =============================================================================
 STATE_CAPITALS = {
     "Punjab": (30.73, 76.78), "Haryana": (29.06, 76.09), "Uttar Pradesh": (26.85, 80.95),
     "Madhya Pradesh": (23.26, 77.41), "Maharashtra": (19.08, 72.88), "Rajasthan": (26.91, 75.79),
@@ -289,10 +262,6 @@ def generate_demo_opportunities(seed=7):
 
 @st.cache_data
 def generate_demo_benchmark():
-    """Includes a clean/analyze stage breakdown so the Acceleration tab can show
-    more than one dimension of comparison. Real data from the notebook has this
-    too (Step 8 exports clean_seconds/analyze_seconds); older exports without
-    those columns are handled gracefully in the Acceleration tab below."""
     scales = [100_000, 500_000, 1_000_000, 2_000_000, 5_000_000, 10_000_000]
     cpu_clean = np.array([0.5, 2.8, 6.5, 15.0, 46.0, 115.0])
     cpu_analyze = np.array([1.3, 6.7, 14.5, 33.0, 94.0, 225.0])
@@ -329,8 +298,6 @@ def generate_demo_clusters(seed=11):
 
 @st.cache_data
 def generate_demo_price_history(seed=21):
-    """Multiple markets per commodity, same shape as real full_analyzed_data.parquet,
-    so the Trends tab's aggregation logic is exercised identically in demo mode."""
     rng = np.random.default_rng(seed)
     dates = pd.date_range(end=pd.Timestamp.today(), periods=90, freq="D")
     t = np.arange(len(dates))
@@ -400,9 +367,7 @@ def load_data():
 (opportunities, clusters, cpu_bench, gpu_bench, price_history,
  forecast, feature_importance, dataproc_bench, using_demo) = load_data()
 
-# =============================================================================
 # SIDEBAR
-# =============================================================================
 with st.sidebar:
     st.markdown(
         '<div class="sidebar-brand"><div class="sidebar-brand-mark">🌾</div>'
@@ -433,9 +398,7 @@ filtered = opportunities[
     & (opportunities["Persistence_Days"] >= min_persistence)
 ].sort_values("Net_Margin_Pct", ascending=False)
 
-# =============================================================================
 # HERO HEADER
-# =============================================================================
 gpu_speedup = (cpu_bench["seconds"].iloc[-1] / gpu_bench["seconds"].iloc[-1]) if len(cpu_bench) and len(gpu_bench) else None
 st.markdown(
     f"""
@@ -463,9 +426,7 @@ if using_demo:
         icon="\u2139\ufe0f",
     )
 
-# =============================================================================
 # KPI ROW
-# =============================================================================
 k1, k2, k3, k4, k5 = st.columns(5)
 kpis = [
     (k1, "\U0001F3AF", "Opportunities found", str(len(filtered)), None),
@@ -485,15 +446,13 @@ for col, icon, label, value, ctx in kpis:
 
 st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
 
-# =============================================================================
 # TABS
-# =============================================================================
 tab_overview, tab_opps, tab_map, tab_trends, tab_bench, tab_clusters, tab_method = st.tabs(
     ["\U0001F4CA Overview", "\U0001F4CB Opportunities", "\U0001F5FA\ufe0f Route Map",
      "\U0001F4C9 Trends & Forecast", "\u26A1 Acceleration Proof", "\U0001F9E9 Risk Clusters", "\U0001F4D6 Methodology"]
 )
 
-# ---------------------------------------------------------------- OVERVIEW --
+# OVERVIEW
 with tab_overview:
     if len(filtered):
         top = filtered.iloc[0]
@@ -550,7 +509,7 @@ with tab_overview:
         unsafe_allow_html=True,
     )
 
-# ------------------------------------------------------------ OPPORTUNITIES --
+# OPPORTUNITIES
 with tab_opps:
     with st.container(border=True):
         st.markdown(h("Ranked procurement opportunities") +
@@ -570,7 +529,6 @@ with tab_opps:
                 "Transport_Cost_Per_Quintal": "\u20b9{:.0f}", "Net_Gain_Per_Quintal": "\u20b9{:.0f}",
                 "Net_Margin_Pct": "{:.1f}%", "Est_Profit_Per_Truckload": "\u20b9{:,.0f}",
             })
-            # Height sized to the actual row count -- no dead space below the last row.
             st.dataframe(styled, use_container_width=True, height=dataframe_height(len(filtered)))
         else:
             st.warning("No opportunities match the current filters. Try lowering the minimum margin in the sidebar.")
@@ -584,7 +542,7 @@ with tab_opps:
         csv = filtered[display_cols].to_csv(index=False).encode("utf-8")
         st.download_button("\u2B07\ufe0f Download filtered results as CSV", csv, "opportunities.csv", "text/csv")
 
-# --------------------------------------------------------------- ROUTE MAP --
+# ROUTE MAP
 with tab_map:
     map_col, legend_col = st.columns([5, 3])
     with map_col:
@@ -613,9 +571,7 @@ with tab_map:
                     get_line_width=400, stroked=True, pickable=True,
                 )
                 view_state = pdk.ViewState(latitude=22.5, longitude=79.0, zoom=3.9, pitch=25)
-                # Explicit light CARTO basemap -- without this, pydeck falls back to a
-                # dark basemap when no Mapbox token is configured, which clashed badly
-                # with the rest of the light-themed UI.
+                
                 st.pydeck_chart(pdk.Deck(
                     layers=[arc_layer, buy_points, sell_points], initial_view_state=view_state,
                     map_provider="carto", map_style="light",
@@ -650,7 +606,7 @@ with tab_map:
             unsafe_allow_html=True,
         )
 
-# --------------------------------------------------------- TRENDS & FORECAST --
+# TRENDS & FORECAST
 with tab_trends:
     c1, c2 = st.columns([2, 1])
     with c1:
@@ -723,7 +679,7 @@ with tab_trends:
             style_fig(fig, height=230, xaxis_title=None, yaxis_title=None)
             plot(fig)
 
-# ----------------------------------------------------------- ACCELERATION --
+# ACCELERATION
 with tab_bench:
     max_scale_cpu = cpu_bench["seconds"].iloc[-1]
     max_scale_gpu = gpu_bench["seconds"].iloc[-1]
@@ -836,7 +792,7 @@ with tab_bench:
             st.markdown(p("Demo numbers. Replace ./data/bench_cpu.csv and bench_gpu.csv with your real measured benchmark.",
                            size="0.8rem"), unsafe_allow_html=True)
 
-# -------------------------------------------------------------- RISK CLUSTERS --
+# RISK CLUSTERS
 with tab_clusters:
     with st.container(border=True):
         st.markdown(h("Commodity-market risk clusters") +
@@ -856,7 +812,7 @@ with tab_clusters:
                   legend=dict(orientation="h", y=1.08, bgcolor="rgba(0,0,0,0)"))
         plot(fig)
 
-# ----------------------------------------------------------------- METHODOLOGY --
+# METHODOLOGY
 with tab_method:
     c1, c2 = st.columns(2)
     with c1:
@@ -908,9 +864,7 @@ with tab_method:
         unsafe_allow_html=True,
     )
 
-# =============================================================================
 # FOOTER
-# =============================================================================
 st.markdown(
     """
     <div class="app-footer">
