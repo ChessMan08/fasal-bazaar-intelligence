@@ -6,9 +6,7 @@ can process the full historical dataset without fitting it into a single machine
 memory, and that can be GPU-accelerated purely through submission config.
 
 > **Naming note:** Google renamed "Dataproc Serverless" / "Google Cloud Serverless
-> for Apache Spark" to **Managed Service for Apache Spark** in 2026. Same product,
-> same `gcloud dataproc batches submit` commands — you may see either name in
-> current docs and dashboards.
+> for Apache Spark" to **Managed Service for Apache Spark** in 2026.
 
 ## Files
 
@@ -26,10 +24,6 @@ gcloud services enable dataproc.googleapis.com compute.googleapis.com storage-ap
 gsutil mb -l us-central1 gs://your-bucket-name
 ```
 
-Request GPU quota now if you haven't already (Compute Engine > Quotas > filter
-`NVIDIA_L4_GPUS` in your target region) — this is the step most likely to block you
-if left until the last day.
-
 ## Running the comparison
 
 1. Land your cleaned raw Agmarknet data (CSV or Parquet) in `gs://your-bucket/raw/`
@@ -44,14 +38,6 @@ if left until the last day.
    the notebook. Having both is a stronger story than either alone: it shows the
    acceleration story holds at both the interactive-notebook layer and the
    production-batch layer.
-
-## Cost awareness
-
-GPU-accelerated batches run on the **premium pricing tier**, which costs more than
-standard. With a $300 free-trial credit this is very affordable for a handful of
-benchmark runs, but don't leave a large-scale job running unattended — check
-current pricing before committing to a very large `SCALES` run:
-https://cloud.google.com/dataproc-serverless/pricing
 
 ## Optional: write straight to BigQuery
 
