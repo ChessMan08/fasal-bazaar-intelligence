@@ -24,7 +24,6 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 - [Architecture](#architecture)
 - [Repository structure](#repository-structure)
 - [Quick start](#quick-start)
-- [Live demo](#live-demo)
 - [Methodology notes](#methodology-notes)
 - [What's honestly out of scope](#whats-honestly-out-of-scope)
 - [Rubric mapping](#rubric-mapping)
@@ -103,8 +102,6 @@ fasal-bazaar-intelligence/
    
 
 ## Methodology notes
-
-Worth reading before a judge asks:
 
 - **Transport cost assumption**: `₹0.28/km/quintal`, based on typical Indian medium-truck
   freight rates (~₹25-30/km for a ~10-tonne load). Configurable in `pipeline_core.py`
