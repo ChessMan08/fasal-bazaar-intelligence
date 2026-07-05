@@ -17,6 +17,8 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 
 ![Prototype preview](docs/images/prototype-preview.png)
 
+---
+
 ## Table of contents
 
 - [The problem](#the-problem)
@@ -25,8 +27,8 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 - [Repository structure](#repository-structure)
 - [Quick start](#quick-start)
 - [Methodology notes](#methodology-notes)
-- [Business Value & Scalability](#business-value-&-Scalability)
-- [Future Scope & Roadmap](#future-scope-&-roadmap)
+- [Business Value & Scalability](#business-value-\&-Scalability)
+- [Future Scope & Roadmap](#future-scope-\&-roadmap)
 - [Rubric mapping](#rubric-mapping)
 - [Acknowledgments](#acknowledgments)
 
