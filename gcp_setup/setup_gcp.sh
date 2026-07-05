@@ -1,14 +1,12 @@
 #!/bin/bash
-# One-time GCP project setup for the Fasal Bazaar Intelligence pipeline.
-# Run this once, at the start of Week 1, right after your $300 free trial is active.
+
 set -euo pipefail
 
-# ---- EDIT THESE ----
-PROJECT_ID="your-gcp-project-id"
-REGION="us-central1"            # pick a region with L4 GPU availability
-BUCKET_NAME="your-bucket-name"  # must be globally unique
+PROJECT_ID="fasal-bazaar-intel"
+REGION="us-central1" 
+BUCKET_NAME="your-bucket-name"
 BQ_DATASET="agmarknet"
-# ---------------------
+
 
 echo "== Setting active project =="
 gcloud config set project "${PROJECT_ID}"
@@ -29,8 +27,6 @@ else
   echo "Bucket gs://${BUCKET_NAME} already exists, skipping creation."
 fi
 
-# Landing zones -- creating placeholder objects so the "folders" exist and are
-# visible in the console immediately.
 for zone in raw processed curated; do
   echo "placeholder" | gsutil cp - "gs://${BUCKET_NAME}/${zone}/.keep"
 done
@@ -58,13 +54,3 @@ echo ""
 echo "== Done =="
 echo "Bucket:  gs://${BUCKET_NAME}/{raw,processed,curated}/"
 echo "Dataset: ${PROJECT_ID}:${BQ_DATASET}"
-echo ""
-echo "Next: upload your raw Agmarknet data to gs://${BUCKET_NAME}/raw/,"
-echo "then point the notebook's RAW_CSV_PATH or the Dataproc job's --input at it."
-echo ""
-echo "For the Looker Studio dashboard: go to lookerstudio.google.com > Create > "
-echo "Data source > BigQuery > select project '${PROJECT_ID}' > dataset '${BQ_DATASET}' > "
-echo "table 'top_opportunities'. Add a table chart sorted by Net_Margin_Pct descending, "
-echo "a scorecard for total Est_Profit_Per_Truckload, and a geo map using Buy_Lat/Buy_Lon. "
-echo "This takes about 15-20 minutes and gives you a live, shareable GCP-native dashboard "
-echo "alongside the Streamlit app."
