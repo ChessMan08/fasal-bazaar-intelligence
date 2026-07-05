@@ -37,10 +37,9 @@ CUSTOM_CSS = f"""
 html, body, [class*="css"], .stMarkdown, .stText {{ font-family: 'Inter', -apple-system, sans-serif; }}
 
 .stApp {{ background: #F6F8F6; }}
-header[data-testid="stHeader"] {{ background: transparent; }}
-div[data-testid="stToolbar"] {{ display:none; }}
 #MainMenu {{visibility: hidden;}}
 footer {{visibility: hidden;}}
+header[data-testid="stHeader"] {{ background: transparent; }}
 .block-container {{ padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1360px; }}
 
 /* ---------- Hero ---------- */
