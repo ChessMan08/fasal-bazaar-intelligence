@@ -30,9 +30,13 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 - [Rubric mapping](#rubric-mapping)
 - [Acknowledgments](#acknowledgments)
 
+---
+
 ## The problem
 
 Agmarknet publishes daily prices across thousands of mandis and hundreds of commodities. Comparing them by hand — or with a CPU-bound script — is slow enough that by the time a price gap is spotted, it's often already closed. Worse, a naive "biggest gap wins" approach routinely recommends routes where trucking cost would exceed the profit.
+
+---
 
 ## What makes this different
 
@@ -42,11 +46,15 @@ Agmarknet publishes daily prices across thousands of mandis and hundreds of comm
 - 💰 **Rupee-denominated output.** Every recommendation ships with an estimated profit per truckload, not just a percentage.
 - ✅ **Tested decision logic.** A pytest suite validates the ranking math itself — including a test that confirms a price gap is correctly *rejected* when trucking cost would exceed it.
 
+---
+
 ## Architecture
 
 ![Architecture diagram](docs/images/architecture.png)
 
 Two independent acceleration proofs: the notebook benchmarks **cudf.pandas** against plain pandas at multiple data scales (interactive layer), and the Dataproc job benchmarks the identical Spark ETL logic with and without the **RAPIDS Accelerator** (distributed-batch layer).
+
+---
 
 ## Repository structure
 
@@ -81,6 +89,7 @@ fasal-bazaar-intelligence/
     ├── Fasal_Bazaar_Intelligence_Submission_Deck.pptx
     └── demo_video_script.md
 ```
+---
 
 ## Quick start
 
@@ -101,6 +110,7 @@ fasal-bazaar-intelligence/
    `gcloud run deploy fasal-bazaar-intelligence --source . --allow-unauthenticated --memory 1Gi`
    from inside that folder. No local Docker install needed.
    
+---
 
 ## Methodology notes
 
@@ -117,11 +127,15 @@ fasal-bazaar-intelligence/
   specific operations and often datacenter-class GPUs. A Colab T4 or a modest Dataproc L4
   allocation has realistically showed single-to-low-double-digit speedups on most operations.
 
+---
+
 ## Business Value & Scalability
 
 - **Commercial Impact:** Protects enterprise margins by mathematically preventing truck dispatches to unprofitable, high-freight mandis. Converts hours of manual Agmarknet data extraction into seconds of automated query.  
 
 - **Cloud Scalability:** Architected entirely on managed Google Cloud services. Dataproc Serverless and BigQuery allow the system to seamlessly scale to cover all 2,700+ Indian mandis without requiring any virtual machine DevOps.
+
+---
 
 ## Future Scope & Roadmap
 
@@ -133,6 +147,8 @@ As a solo build developed within a strict hackathon timeframe, several enterpris
 - **Looker Studio Integration:** Building a comprehensive, interactive Looker Studio dashboard to provide end-users with accessible business intelligence and visual analytics.
 - **Conversational AI Layer:** Integrating the Gemini Enterprise Agent Platform to allow users to interact with the data and arbitage models using natural language.
 
+---
+
 ## Rubric mapping
 
 | Requirement | Where it's answered |
@@ -142,6 +158,8 @@ As a solo build developed within a strict hackathon timeframe, several enterpris
 | Data pipeline | Architecture diagram above; `notebooks/`, `dataproc_job/` |
 | Useful output | `streamlit_app/` — ranked opportunities, route map, profit estimate per truckload |
 | Acceleration proof | Notebook's multi-scale benchmark + `dataproc_job/`'s distributed CPU/GPU comparison |
+
+---
 
 ## Acknowledgments
 
