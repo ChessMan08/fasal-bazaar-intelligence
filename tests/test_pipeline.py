@@ -1,13 +1,3 @@
-"""
-test_pipeline.py
-
-Run with: pytest test_pipeline.py -v
-
-Covers the logic that actually determines whether a recommendation is correct --
-not just "does it run," but "does it flag the right opportunities and correctly
-reject the wrong ones." The transport-cost tests in particular are the ones worth
-walking a judge through if asked how you validated the methodology.
-"""
 import numpy as np
 import pandas as pd
 import pytest
@@ -22,11 +12,7 @@ from pipeline_core import (
     rank_opportunities_transport_aware,
 )
 
-
-# ---------------------------------------------------------------------------
 # clean_pipeline
-# ---------------------------------------------------------------------------
-
 def make_raw_row(**overrides):
     base = dict(
         State=" punjab ", Market=" Ludhiana Mandi ", Commodity=" wheat ",
@@ -65,11 +51,7 @@ def test_clean_drops_non_numeric_prices():
     out = clean_pipeline(df)
     assert len(out) == 1
 
-
-# ---------------------------------------------------------------------------
 # analyze_pipeline
-# ---------------------------------------------------------------------------
-
 def make_series(market, commodity, state, prices, start_date="2025-01-01"):
     dates = pd.date_range(start_date, periods=len(prices), freq="D")
     return pd.DataFrame({
@@ -91,7 +73,7 @@ def test_analyze_state_median_shared_across_markets_same_day():
 
 def test_analyze_zscore_flags_injected_crash():
     stable_prices = [2000, 2005, 2010, 2015, 2020, 2025, 2030]
-    prices = stable_prices + [1200]  # day 8: sudden crash
+    prices = stable_prices + [1200]
     df = make_series("MarketA", "Wheat", "Punjab", prices)
     out = analyze_pipeline(df).sort_values("Arrival_Date")
     crash_row = out.iloc[-1]
@@ -107,18 +89,12 @@ def test_analyze_no_crash_gives_near_zero_zscore_trend():
     assert abs(last_z) < 2.5, "steady linear trend should not read as an anomaly"
 
 
-# ---------------------------------------------------------------------------
 # haversine_km
-# ---------------------------------------------------------------------------
-
 def test_haversine_zero_distance_same_point():
     assert haversine_km(20.0, 78.0, 20.0, 78.0) == pytest.approx(0.0, abs=1e-6)
 
 
 def test_haversine_known_distance_delhi_mumbai():
-    # Delhi (28.6139, 77.2090) to Mumbai (19.0760, 72.8777) -- real-world distance
-    # is ~1150-1160 km great-circle. Wide tolerance since this is a sanity check,
-    # not a precision test.
     dist = haversine_km(28.6139, 77.2090, 19.0760, 72.8777)
     assert 1100 < dist < 1250
 
@@ -128,11 +104,7 @@ def test_haversine_symmetric():
     d2 = haversine_km(19.1, 72.9, 28.6, 77.2)
     assert d1 == pytest.approx(d2)
 
-
-# ---------------------------------------------------------------------------
-# rank_opportunities_transport_aware -- the part most worth a judge probing
-# ---------------------------------------------------------------------------
-
+# rank_opportunities_transport_aware
 def make_analyzed_snapshot(rows):
     """rows: list of dicts with Commodity, Market, State, Modal_Price, Lat, Lon.
     Builds a minimal single-day 'today' snapshot plus enough history for the
@@ -140,14 +112,11 @@ def make_analyzed_snapshot(rows):
     today = pd.Timestamp("2025-06-10")
     df = pd.DataFrame(rows)
     df["Arrival_Date"] = today
-    df["Deviation_Pct"] = 0.0  # not exercised by these tests directly
+    df["Deviation_Pct"] = 0.0
     return df
 
 
 def test_finds_opportunity_when_gap_beats_transport_cost():
-    # Two markets ~100km apart (roughly 1 degree lat), Rs 500 price gap.
-    # Transport cost at default Rs 0.28/km/quintal over ~100km =~ Rs 28/quintal --
-    # nowhere close to eating a Rs 500 gap.
     rows = [
         dict(Commodity="Onion", Market="Cheap Mandi", State="MP", Modal_Price=1000, Lat=23.0, Lon=77.0),
         dict(Commodity="Onion", Market="Pricey Mandi", State="MP", Modal_Price=1500, Lat=24.0, Lon=77.0),
@@ -161,8 +130,6 @@ def test_finds_opportunity_when_gap_beats_transport_cost():
 
 
 def test_rejects_opportunity_when_transport_cost_exceeds_gap():
-    # Same Rs 500 gap, but markets are ~5000km apart (roughly 45 degrees lat) --
-    # transport cost swamps the gap, so this must NOT be flagged as an opportunity.
     rows = [
         dict(Commodity="Onion", Market="Cheap Mandi", State="MP", Modal_Price=1000, Lat=10.0, Lon=77.0),
         dict(Commodity="Onion", Market="Pricey Mandi", State="MP", Modal_Price=1500, Lat=55.0, Lon=77.0),
@@ -173,9 +140,6 @@ def test_rejects_opportunity_when_transport_cost_exceeds_gap():
 
 
 def test_respects_margin_threshold():
-    # ~3% raw price gap (clears the 2% pre-filter), but after netting out transport
-    # cost the margin lands just under the default 3% threshold -- should be excluded
-    # by the default margin but included once the threshold is dropped to 0%.
     rows = [
         dict(Commodity="Onion", Market="A", State="MP", Modal_Price=1000, Lat=23.0, Lon=77.0),
         dict(Commodity="Onion", Market="B", State="MP", Modal_Price=1030, Lat=23.05, Lon=77.0),
@@ -204,7 +168,6 @@ def test_top_n_limits_output():
     df = make_analyzed_snapshot(rows)
     out = rank_opportunities_transport_aware(df, top_n=3)
     assert len(out) == 3
-    # confirm it kept the highest-margin ones (all identical here, so just check sort didn't error)
     assert out["Net_Margin_Pct"].is_monotonic_decreasing
 
 
