@@ -1,22 +1,3 @@
-"""
-spark_arbitrage_job.py
-
-Distributed ETL + analysis job for Agmarknet price data, designed to run on
-Dataproc Serverless (now branded "Managed Service for Apache Spark").
-
-This is the SAME code path for CPU-only and RAPIDS-GPU-accelerated execution --
-the RAPIDS Accelerator for Apache Spark intercepts the physical query plan and
-swaps in GPU kernels via cluster submission properties (spark.rapids.sql.enabled,
-spark.shuffle.manager, spark.dataproc.executor.resource.accelerator.type=l4),
-with zero changes to this script. Same "zero-code-change acceleration" story as
-cudf.pandas at the single-node layer -- this is the distributed-scale proof.
-
-Usage (see submit_cpu_job.sh / submit_gpu_job.sh for full gcloud invocations):
-    spark-submit spark_arbitrage_job.py \
-        --input gs://BUCKET/raw/agmarknet.parquet \
-        --output gs://BUCKET/processed/analyzed \
-        [--bq-table PROJECT.DATASET.TABLE --bq-temp-bucket BUCKET]
-"""
 import argparse
 import time
 
@@ -35,8 +16,6 @@ def load_raw(spark, input_path):
 
 
 def clean(df):
-    """Same normalization rules as the notebook's cudf.pandas clean_pipeline(), so the two
-    layers stay consistent when a judge cross-checks numbers between them."""
     for c in df.columns:
         df = df.withColumnRenamed(c, c.strip().replace(" ", "_"))
 
@@ -55,10 +34,6 @@ def clean(df):
 
 
 def analyze(df):
-    """State-level daily median (approximate, distributed-friendly via percentile_approx --
-    an exact median would require a full sort per group, which doesn't scale) plus a rolling
-    7-row mean/std/z-score per (Market, Commodity), ordered by date. This mirrors the pandas
-    .rolling(7) semantics in the notebook: last 7 rows, not last 7 calendar days."""
     state_win = Window.partitionBy("State", "Commodity", "Arrival_Date")
     df = df.withColumn(
         "State_Median_Price",
@@ -104,12 +79,11 @@ def main():
     df_clean = clean(df_raw)
     df_analyzed = analyze(df_clean)
 
-    # .count() forces full execution (Spark is lazy) -- this is what makes the timing real,
+    # .count() forces full execution
     # not just DAG construction time.
     n_out = df_analyzed.count()
     elapsed = time.time() - t0
 
-    # This line is what you grep out of the job logs for your CPU-vs-GPU benchmark table.
     print(f"BENCHMARK rows_in={n_in} rows_out={n_out} seconds={elapsed:.2f}")
 
     df_analyzed.write.mode("overwrite").parquet(args.output)
