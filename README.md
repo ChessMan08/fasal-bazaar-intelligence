@@ -25,7 +25,8 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 - [Repository structure](#repository-structure)
 - [Quick start](#quick-start)
 - [Methodology notes](#methodology-notes)
-- [What's honestly out of scope](#whats-honestly-out-of-scope)
+- [Business Value & Scalability](#business-value-&-Scalability)
+- [Future Scope & Roadmap](#future-scope-&-roadmap)
 - [Rubric mapping](#rubric-mapping)
 - [Acknowledgments](#acknowledgments)
 
@@ -45,7 +46,7 @@ Agmarknet publishes daily prices across thousands of mandis and hundreds of comm
 
 ![Architecture diagram](docs/images/architecture.png)
 
-Two independent acceleration proofs: the notebook benchmarks **cudf.pandas** against plain pandas at multiple data scales (interactive layer), and the Dataproc job benchmarks the identical Spark ETL logic with and without the **RAPIDS Accelerator** (distributed-batch layer). Same methodology, same code — only the runtime environment differs.
+Two independent acceleration proofs: the notebook benchmarks **cudf.pandas** against plain pandas at multiple data scales (interactive layer), and the Dataproc job benchmarks the identical Spark ETL logic with and without the **RAPIDS Accelerator** (distributed-batch layer).
 
 ## Repository structure
 
@@ -112,19 +113,25 @@ fasal-bazaar-intelligence/
   implementations so the numbers don't silently diverge.
 - **State median**: exact in the pandas pipeline, approximate (`percentile_approx`) in the
   distributed Spark job — a standard, necessary tradeoff at scale.
-- **Report only what you measure.** NVIDIA's public RAPIDS benchmarks (150x, 400x+) are on
+- **The GPU Constrain** NVIDIA's public RAPIDS benchmarks (150x, 400x+) are on
   specific operations and often datacenter-class GPUs. A Colab T4 or a modest Dataproc L4
-  allocation will realistically show single-to-low-double-digit speedups on most operations —
-  that's still a strong, honest story.
-- **The Streamlit app forces a light theme** via `.streamlit/config.toml` — without it, a
-  visitor's dark-mode browser setting silently makes body text invisible against the app's
-  light-themed cards. Don't delete that file.
+  allocation has realistically showed single-to-low-double-digit speedups on most operations.
 
-## What's honestly out of scope
+## Business Value & Scalability
 
-Scoped out for a solo build in the available time, and framed as future work rather than
-hidden: GKE-deployed serving, GPUDirect Storage tuning, Cloud Storage Rapid Buckets, a
-Looker Studio dashboard, and the Gemini Enterprise Agent Platform conversational layer.
+- **Commercial Impact:** Protects enterprise margins by mathematically preventing truck dispatches to unprofitable, high-freight mandis. Converts hours of manual Agmarknet data extraction into seconds of automated query.  
+
+- **Cloud Scalability:** Architected entirely on managed Google Cloud services. Dataproc Serverless and BigQuery allow the system to seamlessly scale to cover all 2,700+ Indian mandis without requiring any virtual machine DevOps.
+
+## Future Scope & Roadmap
+
+As a solo build developed within a strict hackathon timeframe, several enterprise-grade features were intentionally scoped out for future implementation. The architecture is designed to seamlessly integrate these upcoming enhancements:
+
+- **GKE-Deployed Serving:** Transitioning from the current deployment model to Google Kubernetes Engine (GKE) for robust, scalable model serving and orchestration.
+- **GPUDirect Storage Tuning:** Optimizing I/O data pathways to maximize GPU throughput and reduce latency during intensive procurement computations.
+- **Cloud Storage Rapid Buckets:** Implementing high-performance storage configurations for faster, more efficient data access at scale.
+- **Looker Studio Integration:** Building a comprehensive, interactive Looker Studio dashboard to provide end-users with accessible business intelligence and visual analytics.
+- **Conversational AI Layer:** Integrating the Gemini Enterprise Agent Platform to allow users to interact with the data and arbitage models using natural language.
 
 ## Rubric mapping
 
