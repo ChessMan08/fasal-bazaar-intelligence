@@ -1,0 +1,9 @@
+Commodity,Predicted_Change_Pct,Confidence
+Potato,-0.97,0.91
+Soybean,3.04,0.95
+Maize,-1.6,0.95
+Mustard,-2.97,0.95
+Onion,15.08,0.87
+Rice,-9.62,0.83
+Tomato,16.62,0.95
+Wheat,-9.51,0.94
