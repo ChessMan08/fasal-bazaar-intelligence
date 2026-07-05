@@ -1,0 +1,9 @@
+Commodity,Buy_Market,Buy_State,Buy_Price,Buy_Lat,Buy_Lon,Sell_Market,Sell_State,Sell_Price,Sell_Lat,Sell_Lon,Distance_km,Transport_Cost_Per_Quintal,Net_Gain_Per_Quintal,Net_Margin_Pct,Persistence_Days,Est_Profit_Per_Truckload
+Wheat,Rajasthan_Market_11,Rajasthan,1109.35,26.7956562,78.29910278,Madhya Pradesh_Market_15,Madhya Pradesh,3519.42,24.82710266,77.67585754,227.6,63.73,2346.35,211.51,1,234635.0
+Potato,Maharashtra_Market_16,Maharashtra,534.24,19.45472527,74.32472229,Rajasthan_Market_11,Rajasthan,1900.49,26.7956562,78.29910278,911.7,255.26,1110.98,207.96,4,111098.0
+Maize,Haryana_Market_21,Haryana,1084.26,30.2253418,76.68373871,Haryana_Market_8,Haryana,3313.84,30.31483078,76.22457886,45.2,12.66,2216.92,204.46,2,221692.0
+Rice,Gujarat_Market_18,Gujarat,1620.11,22.21713257,72.94580841,Bihar_Market_1,Bihar,4532.66,24.90896797,86.11411285,1374.5,384.85,2527.7,156.02,2,252770.0
+Onion,Madhya Pradesh_Market_22,Madhya Pradesh,975.41,21.93144608,76.33892822,Gujarat_Market_21,Gujarat,2515.29,23.10894012,73.06806946,360.6,100.96,1438.92,147.52,5,143892.0
+Soybean,Gujarat_Market_2,Gujarat,2628.97,22.94891167,71.30792236,Karnataka_Market_15,Karnataka,6852.7,13.23929596,79.31446075,1370.9,383.86,3839.87,146.06,5,383987.0
+Mustard,Haryana_Market_10,Haryana,2897.15,29.2024765,75.41945648,Punjab_Market_4,Punjab,7125.06,30.71313858,75.75574493,171.1,47.9,4180.01,144.28,5,418001.0
+Tomato,Haryana_Market_21,Haryana,1141.52,30.2253418,76.68373871,Punjab_Market_6,Punjab,2793.57,30.81253624,78.13208771,153.3,42.93,1609.12,140.96,3,160912.0
