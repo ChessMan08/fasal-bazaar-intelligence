@@ -1,15 +1,3 @@
-"""
-pipeline_core.py
-
-Single source of truth for the cleaning, analysis, and transport-cost-aware
-arbitrage logic. The notebook keeps inline copies of these functions for
-Colab portability (no extra file upload needed), but they're kept in sync
-with this module, which is what the test suite imports and validates.
-
-If you'd rather avoid duplication: upload this file alongside the notebook
-in Colab and replace the inline function definitions with
-`from pipeline_core import *`.
-"""
 import numpy as np
 import pandas as pd
 
