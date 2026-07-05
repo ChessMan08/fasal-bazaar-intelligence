@@ -11,7 +11,7 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 [![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/)
 [![NVIDIA RAPIDS](https://img.shields.io/badge/NVIDIA%20RAPIDS-76B900?logo=nvidia&logoColor=white)](https://rapids.ai/)
 
-**Participant:** [add your name / team name] · **Track:** NVIDIA + Google Cloud
+**Dashboard:** [add your Cloud Run URL here after deploying]
 
 ---
 
@@ -100,12 +100,7 @@ fasal-bazaar-intelligence/
 5. **Deploy the dashboard** (optional): `streamlit_app/` has a validated `Dockerfile` —
    `gcloud run deploy fasal-bazaar-intelligence --source . --allow-unauthenticated --memory 1Gi`
    from inside that folder. No local Docker install needed.
-
-## Live demo
-
-- **Dashboard:** [add your Cloud Run URL here after deploying]
-- **Notebook:** [add a Colab share link if you want one]
-- **Demo video:** see `docs/demo_video_script.md` for the recording script
+   
 
 ## Methodology notes
 
