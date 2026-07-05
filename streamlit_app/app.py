@@ -41,8 +41,6 @@ html, body, [class*="css"], .stMarkdown, .stText {{ font-family: 'Inter', -apple
 footer {{visibility: hidden;}}
 header[data-testid="stHeader"] {{ background: transparent;}}
 div[data-testid="stToolbar"] {{ display:none; }}
-#MainMenu { visibility: hidden; }
-footer { visibility: hidden; }
 .block-container {{ padding-top: 1.6rem; padding-bottom: 3rem; max-width: 1360px; }}
 
 /* ---------- Hero ---------- */
