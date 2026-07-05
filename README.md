@@ -17,8 +17,6 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 
 ![Prototype preview](docs/images/prototype-preview.png)
 
----
-
 ## Table of contents
 
 - [The problem](#the-problem)
