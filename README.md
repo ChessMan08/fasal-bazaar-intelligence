@@ -11,8 +11,6 @@ Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA t
 [![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/)
 [![NVIDIA RAPIDS](https://img.shields.io/badge/NVIDIA%20RAPIDS-76B900?logo=nvidia&logoColor=white)](https://rapids.ai/)
 
-**Dashboard:** [add your Cloud Run URL here after deploying]
-
 ---
 
 ![Prototype preview](docs/images/prototype-preview.png)
