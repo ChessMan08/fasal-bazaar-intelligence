@@ -6,7 +6,7 @@ Tells a procurement officer exactly which mandi to send a truck to today — aft
 
 Built for the **Gen AI Academy APAC Edition** hackathon (Google Cloud + NVIDIA track).
 
-[![Python](https://img.shields.io/badge/python-3.11+-blue?logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.12+-blue?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-app-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4?logo=googlecloud&logoColor=white)](https://cloud.google.com/)
 [![NVIDIA RAPIDS](https://img.shields.io/badge/NVIDIA%20RAPIDS-76B900?logo=nvidia&logoColor=white)](https://rapids.ai/)
